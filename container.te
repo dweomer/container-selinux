@@ -1692,6 +1692,17 @@ tunable_policy(`sshd_launch_containers',`
 	dontaudit systemd_logind_t iptables_var_run_t:dir read;
 ')
 
+# OpenSSH 9.8+ split sshd into sshd (listener) + sshd-session (post-auth).
+# Forwarding now runs as sshd_session_t instead of sshd_t.
+optional_policy(`
+	tunable_policy(`sshd_launch_containers',`
+		gen_require(`
+			type sshd_session_t;
+		')
+		container_runtime_domtrans(sshd_session_t)
+	')
+')
+
 role container_user_r;
 userdom_restricted_user_template(container_user)
 userdom_manage_home_role(container_user_r, container_user_t)
