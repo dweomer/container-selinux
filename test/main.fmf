@@ -33,9 +33,9 @@ recommend:
     environment:
         ROOTLESS_USER: "fedora"
     adjust:
-        - when: distro == centos-stream
+        - when: distro == centos-stream or distro == fedora-eln
           environment+:
             ROOTLESS_USER: "ec2-user"
-        - when: distro == rhel or distro == fedora-eln
+        - when: distro == rhel
           environment+:
             ROOTLESS_USER: "cloud-user"
